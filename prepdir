@@ -1,0 +1,24 @@
+#!/bin/bash
+
+#creates 100 folders with names folderi in a main folder DeltaSysAdT1
+#add adds an empty file in each
+
+#make a base Directory
+mkdir DeltaSysAdT1
+#change the working directory to this base
+cd DeltaSysAdT1
+
+#loop from 1 to 100
+for i in {1..100}
+do
+   #make a folder in each loop cycle with name folder${i}
+   mkdir folder${i}
+
+   #make an empty file in each folder with name <folder_name>.txt
+   touch folder${i}/folder${i}.txt
+
+   #change permission of each to 700
+   chmod 700 folder${i}
+   chmod 700 folder${i}/folder${i}.txt
+done
+	
