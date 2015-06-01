@@ -13,7 +13,7 @@ if not sys.argv[0][0:1] == "/":
 	script_path = os.getcwd() + "/" + sys.argv[0]
 else:
 	script_path = sys.argv[0];
-print script_path
+#print script_path
 
 main_dir = os.path.expanduser("~/tmp")
 
