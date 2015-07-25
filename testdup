@@ -1,0 +1,55 @@
+#!/bin/bash
+
+# first command line argument to be accepted as the folder to be tested
+rootfolder=$1;
+
+#change directory to the folder mentioned
+cd $rootfolder;
+
+# store the files to be tested in an array
+# filenames from this list will be removed once they match some duplicate
+fileList=($(find . -type f -name '*'))
+
+# iterate through the files in the list
+for file1 in ${fileList[*]}
+do
+	#variable to check if the file has atleast one duplicate
+	duplicates=0;
+
+	if [[ $fileList =~ $file1 ]] ; then
+
+		printf "$file1 has";
+		
+		# check with another file in the list
+		for file2 in ${fileList[*]}
+		do
+			filesDiff=$(diff $file1 $file2)
+
+			# check if the files differ (diff gives no output on complete match) and the files being compared are different entities
+			if [[ $file1 != $file2 ]] && [ -z "$filesDiff" ]  ; then
+				
+				printf "\n\t$file2";
+					
+				#delete the tested file from the array
+				del=($file2);
+				fileList=( ${fileList[*]/$del} );
+
+				# increase the count of duplicates by one
+				duplicates=$((duplicates + 1)) ;
+
+			fi
+	 	done
+	 	
+	 	if [ $duplicates -eq 0 ] ; then
+	 		printf "\nno duplicates\n\n";
+	 	else
+	 		printf "\n($duplicates files) as duplicates\n\n";
+	 	fi
+		
+		#delete the tested file from the array
+		del=($file1);
+		fileList=( ${fileList[*]/$del} );
+
+	fi
+
+done
